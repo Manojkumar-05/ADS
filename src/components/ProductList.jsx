@@ -41,17 +41,16 @@ function ProductList() {
   const addToCart = (product) => {
     const isProductInCart = state.items.some(item => item.id === product.id);
     if (isProductInCart) {
-      toast.info(`${product.name} is already in your cart!`);
+      dispatch({ type: 'INCREASE_QUANTITY', payload: product });
+      toast.info(`${product.name} already in your cart.`);
     } else {
-      dispatch({ type: 'ADD_TO_CART', payload: product });
+      dispatch({ type: 'ADD_TO_CART', payload: { ...product, quantity: 1 } });
       toast.success(`${product.name} added to cart!`);
     }
   };
 
   const buyNow = (product) => {
-    dispatch({ type: 'CLEAR_CART' });
-    addToCart(product);
-    navigate('/checkout');
+    navigate('/checkout', { state: { items: [{ ...product, quantity: 1 }] } });
   };
 
   const filteredProducts = products.filter(product =>

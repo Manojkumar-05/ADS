@@ -24,7 +24,7 @@ function App() {
       <Router>
         <div className="flex flex-col min-h-screen bg-green-100">
           <Navbar />
-          <main className="flex-grow pt-16"> {/* Add padding-top here */}
+          <main className="flex-grow pt-16">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<ProductList />} />
@@ -37,7 +37,18 @@ function App() {
           </main>
           <ConditionalFooter />
         </div>
-        <ToastContainer />
+        <ToastContainer
+          position="bottom-left"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </Router>
     </CartProvider>
   );
@@ -45,7 +56,7 @@ function App() {
 
 function ConditionalFooter() {
   const location = useLocation();
-  const noFooterPaths = ["/checkout", "/product/:id", "/cart"];
+  const noFooterPaths = ["/checkout", "/product/:id", "/cart", "/login", "/signup"];
 
   // Check if the current path matches any of the noFooterPaths
   const shouldHideFooter = noFooterPaths.some((path) =>

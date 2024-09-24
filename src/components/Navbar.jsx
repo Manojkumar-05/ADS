@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, Menu, X, Home, ShoppingBag, ShoppingCart, CreditCard, LogIn, UserPlus, ArrowUp } from 'lucide-react';
+import { Leaf, Menu, X, Home, ShoppingBag, ShoppingCart, LogIn, ArrowUp } from 'lucide-react';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,17 +67,9 @@ function Navbar() {
               <ShoppingCart className="mr-1" size={18} />
               Cart
             </Link>
-            <Link to="/checkout" className="hover:text-green-300 transition duration-300 flex items-center">
-              <CreditCard className="mr-1" size={18} />
-              Checkout
-            </Link>
             <Link to="/login" className="hover:text-green-300 transition duration-300 flex items-center">
               <LogIn className="mr-1" size={18} />
               Login
-            </Link>
-            <Link to="/signup" className="hover:text-green-300 transition duration-300 flex items-center">
-              <UserPlus className="mr-1" size={18} />
-              Sign Up
             </Link>
           </div>
           <button onClick={toggleMenu} className="md:hidden text-2xl">
@@ -109,17 +101,9 @@ function Navbar() {
                   <ShoppingCart className="mr-2" size={24} />
                   Cart
                 </Link>
-                <Link to="/checkout" className="hover:text-green-300 transition duration-300 flex items-center text-xl" onClick={toggleMenu}>
-                  <CreditCard className="mr-2" size={24} />
-                  Checkout
-                </Link>
                 <Link to="/login" className="hover:text-green-300 transition duration-300 flex items-center text-xl" onClick={toggleMenu}>
                   <LogIn className="mr-2" size={24} />
                   Login
-                </Link>
-                <Link to="/signup" className="hover:text-green-300 transition duration-300 flex items-center text-xl" onClick={toggleMenu}>
-                  <UserPlus className="mr-2" size={24} />
-                  Sign Up
                 </Link>
               </div>
             </motion.div>

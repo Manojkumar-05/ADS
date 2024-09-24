@@ -1,264 +1,423 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { toast } from 'react-toastify';
+import { Plus, Minus } from 'lucide-react';
 
-// Mock data for products
 const products = [
-  {
-    id: 1,
-    name: "Ashwagandha",
-    price: 1499,
-    image: "ashwagandha.jpg",
-    description:
-      "Ashwagandha is an ancient medicinal herb with multiple health benefits. It can reduce anxiety and stress, help fight depression, boost fertility and testosterone in men, and even boost brain function.",
+  { 
+    id: 1, 
+    name: "Ashwagandha", 
+    price: 1499, 
+    image: "ashwagandha.jpg", 
+    description: "Ashwagandha is a powerful adaptogen known for reducing stress, enhancing stamina, and boosting cognitive function. It helps in balancing cortisol levels, supports adrenal health, and promotes mental clarity.",
+    benefits: [
+      "Reduces stress and anxiety",
+      "Improves energy and vitality",
+      "Enhances memory and cognitive function",
+      "Supports adrenal health and hormone balance"
+    ]
   },
-  {
-    id: 2,
-    name: "Triphala",
-    price: 999,
-    image: "triphala.jpg",
-    description:
-      "Triphala is a traditional Ayurvedic herbal formulation consisting of three fruits: Amalaki, Bibhitaki, and Haritaki. It is known for its rejuvenating and detoxifying properties.",
+  { 
+    id: 2, 
+    name: "Triphala", 
+    price: 999, 
+    image: "triphala.jpg", 
+    description: "Triphala is a traditional Ayurvedic blend of three fruits, known for its detoxifying, rejuvenating, and digestive benefits. It helps maintain a healthy digestive system, supports weight management, and enhances overall vitality.",
+    benefits: [
+      "Promotes healthy digestion",
+      "Detoxifies the body naturally",
+      "Supports weight management",
+      "Boosts immunity and overall well-being"
+    ]
   },
-  {
-    id: 3,
-    name: "Brahmi",
-    price: 1299,
-    image: "brahmi.jpg",
-    description:
-      "Brahmi is a powerful herb that has been used in traditional Ayurvedic medicine for centuries. It is known for its ability to enhance memory, improve concentration, and reduce stress.",
+  { 
+    id: 3, 
+    name: "Brahmi", 
+    price: 1299, 
+    image: "brahmi.jpg", 
+    description: "Brahmi is an ancient Ayurvedic herb known for its brain-boosting properties. It enhances cognitive function, improves focus and memory, and helps reduce mental fatigue and stress.",
+    benefits: [
+      "Improves memory and concentration",
+      "Reduces stress and anxiety",
+      "Enhances cognitive function",
+      "Supports mental clarity and brain health"
+    ]
   },
-  {
-    id: 4,
-    name: "Neem Capsules",
-    price: 799,
-    image: "neem.jpg",
-    description:
-      "Neem Capsules are known for their antibacterial, antifungal, and anti-inflammatory properties. They help in purifying the blood and maintaining healthy skin.",
+  { 
+    id: 4, 
+    name: "Neem Capsules", 
+    price: 799, 
+    image: "neem.jpg", 
+    description: "Neem is renowned for its powerful antibacterial, antifungal, and anti-inflammatory properties. Neem Capsules support healthy skin, detoxification, and immune function.",
+    benefits: [
+      "Promotes clear, healthy skin",
+      "Supports immune system health",
+      "Detoxifies the body",
+      "Fights off infections and inflammation"
+    ]
   },
-  {
-    id: 5,
-    name: "Tulsi Drops",
-    price: 499,
-    image: "tulsi.jpg",
-    description:
-      "Tulsi Drops are made from the pure extract of Tulsi leaves. They help in boosting immunity, reducing stress, and promoting overall health.",
+  { 
+    id: 5, 
+    name: "Tulsi Drops", 
+    price: 499, 
+    image: "tulsi.jpg", 
+    description: "Tulsi is known as 'The Queen of Herbs' for its immunity-boosting, stress-reducing, and health-promoting benefits. Tulsi Drops help strengthen the immune system, fight free radicals, and improve overall wellness.",
+    benefits: [
+      "Boosts immune function",
+      "Reduces stress and promotes relaxation",
+      "Supports respiratory health",
+      "Rich in antioxidants"
+    ]
   },
-  {
-    id: 6,
-    name: "Shilajit Resin",
-    price: 2999,
-    image: "shilajit.jpg",
-    description:
-      "Shilajit Resin is a natural substance that is known for its rejuvenating and anti-aging properties. It helps in boosting energy, improving stamina, and enhancing overall well-being.",
+  { 
+    id: 6, 
+    name: "Shilajit Resin", 
+    price: 2999, 
+    image: "shilajit.jpg", 
+    description: "Shilajit Resin is a rejuvenating substance that supports energy, vitality, and overall health. It helps boost stamina, enhance cognitive function, and promote longevity.",
+    benefits: [
+      "Boosts energy and endurance",
+      "Improves stamina and strength",
+      "Supports cognitive function and memory",
+      "Promotes anti-aging and longevity"
+    ]
   },
-  {
-    id: 7,
-    name: "Amla Powder",
-    price: 399,
-    image: "amla.jpg",
-    description:
-      "Amla Powder is rich in Vitamin C and antioxidants. It helps in boosting immunity, improving digestion, and promoting healthy hair and skin.",
+  { 
+    id: 7, 
+    name: "Amla Powder", 
+    price: 399, 
+    image: "amla.jpg", 
+    description: "Amla, rich in Vitamin C and antioxidants, is a powerful immune booster. Amla Powder supports healthy digestion, promotes glowing skin, and helps in maintaining healthy hair.",
+    benefits: [
+      "Boosts immunity with high Vitamin C content",
+      "Improves digestion and gut health",
+      "Enhances skin and hair health",
+      "Rich in antioxidants"
+    ]
   },
-  {
-    id: 8,
-    name: "Guggul Tablets",
-    price: 899,
-    image: "guggul.jpg",
-    description:
-      "Guggul Tablets are known for their anti-inflammatory and cholesterol-lowering properties. They help in maintaining healthy joints and supporting weight management.",
+  { 
+    id: 8, 
+    name: "Guggul Tablets", 
+    price: 899, 
+    image: "guggul.jpg", 
+    description: "Guggul is a natural anti-inflammatory and cholesterol-lowering agent. Guggul Tablets help maintain healthy joints, support weight management, and promote heart health.",
+    benefits: [
+      "Reduces inflammation in joints",
+      "Supports weight management",
+      "Promotes heart and cholesterol health",
+      "Boosts overall vitality"
+    ]
   },
-  {
-    id: 9,
-    name: "Moringa Capsules",
-    price: 699,
-    image: "moringa.jpg",
-    description:
-      "Moringa Capsules are packed with essential nutrients and antioxidants. They help in boosting energy, improving digestion, and supporting overall health.",
+  { 
+    id: 9, 
+    name: "Moringa Capsules", 
+    price: 699, 
+    image: "moringa.jpg", 
+    description: "Moringa is a nutrient-rich superfood packed with antioxidants. Moringa Capsules help improve energy levels, support digestion, and enhance overall well-being.",
+    benefits: [
+      "Boosts energy and vitality",
+      "Rich in essential vitamins and minerals",
+      "Improves digestion",
+      "Supports overall health and well-being"
+    ]
   },
-  {
-    id: 10,
-    name: "Bhringraj Oil",
-    price: 1599,
-    image: "bhringraj.jpg",
-    description:
-      "Bhringraj Oil is known for its hair growth-promoting properties. It helps in nourishing the scalp, reducing hair fall, and promoting healthy and lustrous hair.",
+  { 
+    id: 10, 
+    name: "Bhringraj Oil", 
+    price: 1599, 
+    image: "bhringraj.jpg", 
+    description: "Bhringraj Oil is renowned for its hair growth-promoting properties. It nourishes the scalp, strengthens hair roots, reduces hair fall, and promotes shiny, healthy hair.",
+    benefits: [
+      "Promotes hair growth and reduces hair fall",
+      "Nourishes the scalp and strengthens hair",
+      "Adds shine and luster to hair",
+      "Helps reduce dandruff"
+    ]
   },
-  {
-    id: 11,
-    name: "Guduchi Tablets",
-    price: 999,
-    image: "guduchi.jpg",
-    description:
-      "Guduchi Tablets are known for their immune-boosting and detoxifying properties. They help in promoting overall health and well-being.",
+  { 
+    id: 11, 
+    name: "Guduchi Tablets", 
+    price: 999, 
+    image: "guduchi.jpg", 
+    description: "Guduchi is known for its immune-boosting and detoxifying properties. Guduchi Tablets help strengthen immunity, cleanse the body, and promote overall well-being.",
+    benefits: [
+      "Boosts immune system",
+      "Detoxifies the body",
+      "Promotes healthy liver function",
+      "Supports overall vitality"
+    ]
   },
-  {
-    id: 12,
-    name: "Karela Juice",
-    price: 1299,
-    image: "karela.jpg",
-    description:
-      "Karela Juice is known for its blood sugar-lowering properties. It helps in maintaining healthy blood sugar levels and promoting overall health.",
+  { 
+    id: 12, 
+    name: "Karela Juice", 
+    price: 1299, 
+    image: "karela.jpg", 
+    description: "Karela Juice is a natural remedy for managing blood sugar levels. It supports healthy digestion, improves metabolism, and promotes overall health.",
+    benefits: [
+      "Helps maintain healthy blood sugar levels",
+      "Improves digestion and metabolism",
+      "Supports liver function",
+      "Promotes overall health and vitality"
+    ]
   },
-  {
-    id: 13,
-    name: "Manjistha Powder",
-    price: 799,
-    image: "manjistha.jpg",
-    description:
-      "Manjistha Powder is known for its blood-purifying and skin-clearing properties. It helps in promoting healthy and glowing skin.",
+  { 
+    id: 13, 
+    name: "Manjistha Powder", 
+    price: 799, 
+    image: "manjistha.jpg", 
+    description: "Manjistha is a powerful blood purifier that promotes healthy, glowing skin. Manjistha Powder supports detoxification, aids in clear skin, and balances the body.",
+    benefits: [
+      "Purifies the blood",
+      "Promotes healthy, glowing skin",
+      "Supports detoxification",
+      "Balances the body's natural processes"
+    ]
   },
-  {
-    id: 14,
-    name: "Shatavari Capsules",
-    price: 1199,
-    image: "shatavari.jpg",
-    description:
-      "Shatavari Capsules are known for their hormone-balancing and reproductive health-promoting properties. They help in supporting women's health and well-being.",
+  { 
+    id: 14, 
+    name: "Shatavari Capsules", 
+    price: 1199, 
+    image: "shatavari.jpg", 
+    description: "Shatavari is a well-known Ayurvedic herb for supporting women's health. Shatavari Capsules help balance hormones, support reproductive health, and improve vitality.",
+    benefits: [
+      "Balances hormones in women",
+      "Supports reproductive health",
+      "Improves vitality and well-being",
+      "Promotes digestive health"
+    ]
   },
-  {
-    id: 15,
-    name: "Arjuna Tablets",
-    price: 899,
-    image: "arjuna.jpg",
-    description:
-      "Arjuna Tablets are known for their heart health-promoting properties. They help in maintaining healthy blood pressure and supporting cardiovascular health.",
+  { 
+    id: 15, 
+    name: "Arjuna Tablets", 
+    price: 899, 
+    image: "arjuna.jpg", 
+    description: "Arjuna Tablets are known for their heart health benefits. They help maintain healthy blood pressure, improve circulation, and support cardiovascular wellness.",
+    benefits: [
+      "Supports heart health and circulation",
+      "Helps maintain healthy blood pressure",
+      "Promotes cardiovascular well-being",
+      "Rich in antioxidants"
+    ]
   },
-  {
-    id: 16,
-    name: "Bala Oil",
-    price: 1799,
-    image: "bala.jpg",
-    description:
-      "Bala Oil is known for its muscle-strengthening and rejuvenating properties. It helps in promoting healthy muscles and joints.",
+  { 
+    id: 16, 
+    name: "Bala Oil", 
+    price: 1799, 
+    image: "bala.jpg", 
+    description: "Bala Oil is used for its muscle-strengthening and rejuvenating properties. It helps promote healthy muscles and joints, providing relief from stiffness and pain.",
+    benefits: [
+      "Strengthens muscles and joints",
+      "Promotes rejuvenation and vitality",
+      "Relieves joint pain and stiffness",
+      "Improves flexibility and mobility"
+    ]
   },
-  {
-    id: 17,
-    name: "Chyawanprash",
-    price: 1499,
-    image: "chyawanprash.jpg",
-    description:
-      "Chyawanprash is a traditional Ayurvedic formulation that is known for its immune-boosting and rejuvenating properties. It helps in promoting overall health and well-being.",
+  { 
+    id: 17, 
+    name: "Chyawanprash", 
+    price: 1499, 
+    image: "chyawanprash.jpg", 
+    description: "Chyawanprash is a traditional Ayurvedic formulation known for boosting immunity and vitality. It contains a blend of herbs that rejuvenate the body and support overall health.",
+    benefits: [
+      "Boosts immunity and vitality",
+      "Promotes energy and rejuvenation",
+      "Supports respiratory health",
+      "Rich in antioxidants and nutrients"
+    ]
   },
-  {
-    id: 18,
-    name: "Haritaki Powder",
-    price: 499,
-    image: "haritaki.jpg",
-    description:
-      "Haritaki Powder is known for its digestive health-promoting properties. It helps in improving digestion, relieving constipation, and promoting overall health.",
+  { 
+    id: 18, 
+    name: "Haritaki Powder", 
+    price: 499, 
+    image: "haritaki.jpg", 
+    description: "Haritaki Powder is well-known for its digestive health benefits. It helps maintain healthy digestion, detoxifies the body, and supports overall well-being.",
+    benefits: [
+      "Promotes healthy digestion",
+      "Detoxifies and cleanses the body",
+      "Supports overall vitality",
+      "Helps maintain digestive health"
+    ]
   },
-  {
-    id: 19,
-    name: "Jatamansi Oil",
-    price: 2499,
-    image: "jatamansi.jpg",
-    description:
-      "Jatamansi Oil is known for its calming and stress-relieving properties. It helps in promoting relaxation, improving sleep, and supporting mental well-being.",
+  { 
+    id: 19, 
+    name: "Jatamansi Oil", 
+    price: 2499, 
+    image: "jatamansi.jpg", 
+    description: "Jatamansi Oil is known for its calming properties. It helps promote relaxation, improves sleep quality, and supports mental clarity.",
+    benefits: [
+      "Promotes relaxation and calmness",
+      "Improves sleep quality",
+      "Supports cognitive function",
+      "Reduces stress and anxiety"
+    ]
   },
-  {
-    id: 20,
-    name: "Kumkumadi Oil",
-    price: 2999,
-    image: "kumkumadi.jpg",
-    description:
-      "Kumkumadi Oil is known for its skin-brightening and anti-aging properties. It helps in promoting healthy and glowing skin.",
+  { 
+    id: 20, 
+    name: "Kumkumadi Oil", 
+    price: 2999, 
+    image: "kumkumadi.jpg", 
+    description: "Kumkumadi Oil is a premium facial oil known for its skin rejuvenating properties. It brightens the complexion, reduces dark circles, and promotes radiant skin.",
+    benefits: [
+      "Brightens complexion",
+      "Reduces dark circles",
+      "Promotes radiant skin",
+      "Enhances skin texture"
+    ]
   },
-  {
-    id: 21,
-    name: "Licorice Root Powder",
-    price: 599,
-    image: "licorice.jpg",
-    description:
-      "Licorice Root Powder is known for its anti-inflammatory and skin-soothing properties. It helps in promoting healthy and clear skin.",
+  { 
+    id: 21, 
+    name: "Pippali Powder", 
+    price: 699, 
+    image: "pippali.jpg", 
+    description: "Pippali is known for its respiratory benefits. It supports lung health and enhances digestion.",
+    benefits: [
+      "Supports respiratory health",
+      "Enhances digestion",
+      "Promotes metabolic function",
+      "Boosts immunity"
+    ]
   },
-  {
-    id: 22,
-    name: "Musta Powder",
-    price: 699,
-    image: "musta.jpg",
-    description:
-      "Musta Powder is known for its digestive health-promoting properties. It helps in improving digestion, relieving bloating, and promoting overall health.",
+  { 
+    id: 22, 
+    name: "Saffron Extract", 
+    price: 1999, 
+    image: "saffron.jpg", 
+    description: "Saffron is known for its mood-enhancing properties. It promotes emotional well-being and supports skin health.",
+    benefits: [
+      "Enhances mood",
+      "Supports skin health",
+      "Promotes relaxation",
+      "Rich in antioxidants"
+    ]
   },
-  {
-    id: 23,
-    name: "Punarnava Tablets",
-    price: 999,
-    image: "punarnava.jpg",
-    description:
-      "Punarnava Tablets are known for their kidney health-promoting properties. They help in maintaining healthy kidney function and supporting overall health.",
+  { 
+    id: 23, 
+    name: "Vacha Powder", 
+    price: 899, 
+    image: "vacha.jpg", 
+    description: "Vacha is known for its cognitive benefits. It supports memory and enhances clarity of thought.",
+    benefits: [
+      "Supports cognitive function",
+      "Enhances memory",
+      "Promotes mental clarity",
+      "Reduces mental fatigue"
+    ]
   },
-  {
-    id: 24,
-    name: "Saffron Threads",
-    price: 4999,
-    image: "saffron.jpg",
-    description:
-      "Saffron Threads are known for their antioxidant and mood-enhancing properties. They help in promoting overall health and well-being.",
+  { 
+    id: 24, 
+    name: "Yashtimadhu Powder", 
+    price: 799, 
+    image: "yashtimadhu.jpg", 
+    description: "Yashtimadhu is known for its soothing properties. It supports digestive health and enhances respiratory function.",
+    benefits: [
+      "Soothes digestive system",
+      "Supports respiratory health",
+      "Enhances immune function",
+      "Reduces inflammation"
+    ]
   },
-  {
-    id: 25,
-    name: "Trikatu Powder",
-    price: 499,
-    image: "trikatu.jpg",
-    description:
-      "Trikatu Powder is known for its digestive health-promoting properties. It helps in improving digestion, relieving indigestion, and promoting overall health.",
-  },
+  { 
+    id: 25, 
+    name: "Zingiber Powder", 
+    price: 499, 
+    image: "zingiber.jpg", 
+    description: "Zingiber, or ginger, is known for its digestive and anti-inflammatory properties. It supports gastrointestinal health and boosts immunity.",
+    benefits: [
+      "Aids digestion",
+      "Reduces inflammation",
+      "Boosts immune system",
+      "Enhances circulation"
+    ]
+  }
 ];
 
 function ProductDetails() {
   const { id } = useParams();
   const product = products.find((p) => p.id === parseInt(id));
-  const { dispatch } = useCart();
+  const { state, dispatch } = useCart();
   const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+
+  const isProductInCart = state.items.some(item => item.id === product.id);
 
   const addToCart = () => {
-    dispatch({ type: "ADD_TO_CART", payload: product });
-    toast.success(`${product.name} added to cart!`);
+    if (isProductInCart) {
+      dispatch({ type: 'INCREASE_QUANTITY', payload: product });
+      toast.info(`Increased quantity of ${product.name} in your cart.`);
+    } else {
+      dispatch({ type: 'ADD_TO_CART', payload: { ...product, quantity } });
+      toast.success(`${product.name} added to cart!`);
+    }
   };
 
   const buyNow = () => {
-    dispatch({ type: "CLEAR_CART" });
-    addToCart();
-    navigate("/checkout");
+    // Navigate to checkout with the current product without modifying the cart
+    navigate('/checkout', { state: { items: [{ ...product, quantity }] } });
   };
 
+  const increaseQuantity = () => setQuantity(prev => prev + 1);
+  const decreaseQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
+
   return (
-    <div className="container mx-auto px-4 py-12 max-w-6xl">
-      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-          <div className="md:w-1/2 p-6">
-            <img
-              src={`/assets/${product.image}`}
-              alt={product.name}
-              className="w-full h-full object-cover rounded-lg"
-            />
+    <motion.div 
+      className="container mx-auto px-4 py-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="flex flex-col md:flex-row">
+        <motion.div 
+          className="md:w-1/2"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <img src={`/assets/${product.image}`} alt={product.name} className="w-full rounded-lg shadow-md" />
+        </motion.div>
+        <motion.div 
+          className="md:w-1/2 md:pl-8 mt-4 md:mt-0"
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
+          <p className="text-xl text-green-600 font-semibold mb-4">₹{product.price.toLocaleString('en-IN')}</p>
+          <p className="text-gray-700 mb-6">{product.description}</p>
+          <div className="flex items-center mb-4">
+            <button 
+              onClick={decreaseQuantity}
+              className="bg-gray-200 p-2 rounded-full"
+            >
+              <Minus size={20} />
+            </button>
+            <span className="mx-4 text-xl">{quantity}</span>
+            <button 
+              onClick={increaseQuantity}
+              className="bg-gray-200 p-2 rounded-full"
+            >
+              <Plus size={20} />
+            </button>
           </div>
-          <div className="md:w-1/2 p-8 flex flex-col justify-center">
-            <h2 className="text-3xl font-bold mb-4 text-gray-800">{product.name}</h2>
-            <p className="text-2xl text-green-600 font-semibold mb-6">
-              ₹{product.price.toLocaleString("en-IN")}
-            </p>
-            <p className="text-gray-600 mb-8 leading-relaxed">{product.description}</p>
-            <div className="flex space-x-4">
-              <button
-                onClick={addToCart}
-                className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition duration-300 ease-in-out"
-              >
-                Add to Cart
-              </button>
-              <button
-                onClick={buyNow}
-                className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 ease-in-out"
-              >
-                Buy Now
-              </button>
-            </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={addToCart}
+              className={`flex-grow ${isProductInCart ? 'bg-gray-400' : 'bg-green-600'} text-white px-6 py-2 rounded hover:bg-green-700`}
+              disabled={isProductInCart}
+            >
+              {isProductInCart ? 'In Cart' : 'Add to Cart'}
+            </button>
+            <button
+              onClick={buyNow}
+              className="flex-grow bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            >
+              Buy Now
+            </button>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

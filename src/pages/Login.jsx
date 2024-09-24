@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
+  // Prevent body scrolling when the component is mounted
+  useEffect(() => {
+    document.body.style.overflow = "hidden"; // Disable page scroll
+    return () => {
+      document.body.style.overflow = "auto"; // Re-enable scrolling when component unmounts
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-green-400 to-green-800 flex items-center justify-center p-4">
+    <div className="min-h-screen pt-8 bg-gradient-to-br from-green-400 to-green-800 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-2xl overflow-hidden max-w-md w-full">
         <div className="p-8">
           <h2 className="text-3xl font-extrabold text-center mb-8 text-green-800">
