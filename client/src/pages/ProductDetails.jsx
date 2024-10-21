@@ -353,7 +353,6 @@ function ProductDetails() {
   };
 
   const buyNow = () => {
-    // Navigate to checkout with the current product without modifying the cart
     navigate('/checkout', { state: { items: [{ ...product, quantity }] } });
   };
 
@@ -362,22 +361,22 @@ function ProductDetails() {
 
   return (
     <motion.div 
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-8 flex justify-center items-center min-h-screen"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row max-w-4xl bg-white rounded-lg shadow-md p-8">
         <motion.div 
           className="md:w-1/2"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <img src={`/assets/${product.image}`} alt={product.name} className="w-full rounded-lg shadow-md" />
+          <img src={`./assets/products/${product.image}`} alt={product.name} className="w-full rounded-lg shadow-md" />
         </motion.div>
         <motion.div 
-          className="md:w-1/2 md:pl-8 mt-4 md:mt-0"
+          className="md:w-1/2 md:pl-8 mt-4 md:mt-0" 
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -385,6 +384,14 @@ function ProductDetails() {
           <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
           <p className="text-xl text-green-600 font-semibold mb-4">₹{product.price.toLocaleString('en-IN')}</p>
           <p className="text-gray-700 mb-6">{product.description}</p>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold mb-2">Benefits:</h3>
+            <ul className="list-disc pl-5">
+              {product.benefits.map((benefit, index) => (
+                <li key={index} className="text-gray-700">{benefit}</li>
+              ))}
+            </ul>
+          </div>
           <div className="flex items-center mb-4">
             <button 
               onClick={decreaseQuantity}

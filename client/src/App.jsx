@@ -11,8 +11,7 @@ import ProductList from "./components/ProductList";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import AuthPage from "./pages/AuthPage";
 import Footer from "./components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { ToastContainer } from "react-toastify";
@@ -24,15 +23,15 @@ function App() {
       <Router>
         <div className="flex flex-col min-h-screen bg-green-100">
           <Navbar />
-          <main className="flex-grow pt-16">
+          <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<ProductList />} />
               <Route path="/product/:id" element={<ProductDetails />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<AuthPage />} />
+              <Route path="/signup" element={<AuthPage />} />
             </Routes>
           </main>
           <ConditionalFooter />
@@ -58,7 +57,6 @@ function ConditionalFooter() {
   const location = useLocation();
   const noFooterPaths = ["/checkout", "/product/:id", "/cart", "/login", "/signup"];
 
-  // Check if the current path matches any of the noFooterPaths
   const shouldHideFooter = noFooterPaths.some((path) =>
     location.pathname.startsWith(path.replace(":id", ""))
   );

@@ -5,33 +5,61 @@ import { Star, ShoppingCart, Search } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { toast } from 'react-toastify';
 
+// Import images
+import ashwagandhaImg from '../assets/products/ashwagandha.jpg';
+import triphalaImg from '../assets/products/triphala.jpg';
+import brahmiImg from '../assets/products/brahmi-tonic.jpg';
+import neemImg from '../assets/products/neem-oil.jpg';
+import tulsiImg from '../assets/products/tulsi.jpg';
+import shilajitImg from '../assets/products/shilajit.jpg';
+import amlaImg from '../assets/products/amla.jpg';
+import guggulImg from '../assets/products/guggul.jpg';
+import moringaImg from '../assets/products/musta.jpeg';
+import bhringrajImg from '../assets/products/bhringraj.jpg';
+import guduchiImg from '../assets/products/guduchi.jpg';
+import karelaImg from '../assets/products/karela.jpeg';
+import manjisthaImg from '../assets/products/manjistha..jpg';
+import shatavariImg from '../assets/products/shatavari.jpg';
+import arjunaImg from '../assets/products/arjuna.jpg';
+import balaImg from '../assets/products/bala.jpg';
+import chyawanprashImg from '../assets/products/chyawanprash.jpg';
+import haritakiImg from '../assets/products/haritaki.jpg';
+import jatamansiImg from '../assets/products/jatamansi.jpg';
+import kumkumadiImg from '../assets/products/kumkumadi.jpg';
+import licoriceImg from '../assets/products/licorice.jpeg';
+import mustaImg from '../assets/products/musta.jpeg';
+import punarnavaImg from '../assets/products/punarnava.jpg';
+import saffronImg from '../assets/products/saffron.jpg';
+import trikatuImg from '../assets/products/trikatu-powder.jpg';
+
 const products = [
-  { id: 1, name: 'Ashwagandha', price: 1499, image: 'ashwagandha.jpg' },
-  { id: 2, name: 'Triphala', price: 999, image: 'triphala.jpg' },
-  { id: 3, name: 'Brahmi', price: 1299, image: 'brahmi.jpg' },
-  { id: 4, name: 'Neem Capsules', price: 799, image: 'neem.jpg' },
-  { id: 5, name: 'Tulsi Drops', price: 499, image: 'tulsi.jpg' },
-  { id: 6, name: 'Shilajit Resin', price: 2999, image: 'shilajit.jpg' },
-  { id: 7, name: 'Amla Powder', price: 399, image: 'amla.jpg' },
-  { id: 8, name: 'Guggul Tablets', price: 899, image: 'guggul.jpg' },
-  { id: 9, name: 'Moringa Capsules', price: 699, image: 'moringa.jpg' },
-  { id: 10, name: 'Bhringraj Oil', price: 1599, image: 'bhringraj.jpg' },
-  { id: 11, name: 'Guduchi Tablets', price: 999, image: 'guduchi.jpg' },
-  { id: 12, name: 'Karela Juice', price: 1299, image: 'karela.jpg' },
-  { id: 13, name: 'Manjistha Powder', price: 799, image: 'manjistha.jpg' },
-  { id: 14, name: 'Shatavari Capsules', price: 1199, image: 'shatavari.jpg' },
-  { id: 15, name: 'Arjuna Tablets', price: 899, image: 'arjuna.jpg' },
-  { id: 16, name: 'Bala Oil', price: 1799, image: 'bala.jpg' },
-  { id: 17, name: 'Chyawanprash', price: 1499, image: 'chyawanprash.jpg' },
-  { id: 18, name: 'Haritaki Powder', price: 499, image: 'haritaki.jpg' },
-  { id: 19, name: 'Jatamansi Oil', price: 2499, image: 'jatamansi.jpg' },
-  { id: 20, name: 'Kumkumadi Oil', price: 2999, image: 'kumkumadi.jpg' },
-  { id: 21, name: 'Licorice Root Powder', price: 599, image: 'licorice.jpg' },
-  { id: 22, name: 'Musta Powder', price: 699, image: 'musta.jpg' },
-  { id: 23, name: 'Punarnava Tablets', price: 999, image: 'punarnava.jpg' },
-  { id: 24, name: 'Saffron Threads', price: 4999, image: 'saffron.jpg' },
-  { id: 25, name: 'Trikatu Powder', price: 499, image: 'trikatu.jpg' },
+  { id: 1, name: 'Ashwagandha', price: 1499, image: ashwagandhaImg },
+  { id: 2, name: 'Triphala', price: 999, image: triphalaImg },
+  { id: 3, name: 'Brahmi', price: 1299, image: brahmiImg },
+  { id: 4, name: 'Neem Capsules', price: 799, image: neemImg },
+  { id: 5, name: 'Tulsi Drops', price: 499, image: tulsiImg },
+  { id: 6, name: 'Shilajit Resin', price: 2999, image: shilajitImg },
+  { id: 7, name: 'Amla Powder', price: 399, image: amlaImg },
+  { id: 8, name: 'Guggul Tablets', price: 899, image: guggulImg },
+  { id: 9, name: 'Moringa Capsules', price: 699, image: moringaImg },
+  { id: 10, name: 'Bhringraj Oil', price: 1599, image: bhringrajImg },
+  { id: 11, name: 'Guduchi Tablets', price: 999, image: guduchiImg },
+  { id: 12, name: 'Karela Juice', price: 1299, image: karelaImg },
+  { id: 13, name: 'Manjistha Powder', price: 799, image: manjisthaImg },
+  { id: 14, name: 'Shatavari Capsules', price: 1199, image: shatavariImg },
+  { id: 15, name: 'Arjuna Tablets', price: 899, image: arjunaImg },
+  { id: 16, name: 'Bala Oil', price: 1799, image: balaImg },
+  { id: 17, name: 'Chyawanprash', price: 1499, image: chyawanprashImg },
+  { id: 18, name: 'Haritaki Powder', price: 499, image: haritakiImg },
+  { id: 19, name: 'Jatamansi Oil', price: 2499, image: jatamansiImg },
+  { id: 20, name: 'Kumkumadi Oil', price: 2999, image: kumkumadiImg },
+  { id: 21, name: 'Licorice Root Powder', price: 599, image: licoriceImg },
+  { id: 22, name: 'Musta Powder', price: 699, image: mustaImg },
+  { id: 23, name: 'Punarnava Tablets', price: 999, image: punarnavaImg },
+  { id: 24, name: 'Saffron Threads', price: 4999, image: saffronImg },
+  { id: 25, name: 'Trikatu Powder', price: 499, image: trikatuImg },
 ];
+
 
 function ProductList() {
   const { state, dispatch } = useCart();
@@ -80,7 +108,11 @@ function ProductList() {
             transition={{ duration: 0.5 }}
           >
             <Link to={`/product/${product.id}`}>
-              <img src={`/assets/${product.image}`} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />
+              <img 
+                src={product.image} 
+                alt={product.name} 
+                className="w-full max-h-96 object-contail mb-4 rounded" 
+              />
             </Link>
             <div className="flex items-center justify-between">
               <div>

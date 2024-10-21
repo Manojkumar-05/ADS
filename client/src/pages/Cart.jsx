@@ -30,7 +30,7 @@ function Cart() {
     : 0;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 ">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Your Cart</h2>
         {state.items && state.items.length > 0 && (
@@ -56,7 +56,7 @@ function Cart() {
                   className="flex justify-between items-center border-b py-4"
                 >
                   <div className="flex items-center">
-                    <img src={`/assets/${item.image}`} alt={item.name} className="w-16 h-16 object-cover mr-4" />
+                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover mr-4" />
                     <div>
                       <h3 className="text-lg font-semibold">{item.name}</h3>
                       <p className="text-gray-600">₹{(item.price * item.quantity).toLocaleString("en-IN")}</p>

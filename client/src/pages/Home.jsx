@@ -4,6 +4,16 @@ import { Leaf, ShoppingCart, Star, User, ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion"; 
 import backgroundImage from "../assets/Home.avif";
 
+// Import product images
+import ashwagandhaImage from "../assets/products/ashwagandha.jpg";
+import turmericCreamImage from "../assets/products/turmeric-cream.jpeg";
+import triphalaImage from "../assets/products/triphala.jpg";
+import neemOilImage from "../assets/products/neem-oil.jpg";
+import brahmiTonicImage from "../assets/products/brahmi-tonic.jpg";
+import shatavariImage from "../assets/products/shatavari.jpg";
+import amlaImage from "../assets/products/amla.jpg";
+import guduchiImage from "../assets/products/guduchi.jpg";
+
 export default function HomePage() {
   const featuredProductsRef = useRef(null);
   const featuredProductsInView = useInView(featuredProductsRef, { once: true, amount: 0.2 });
@@ -73,27 +83,27 @@ export default function HomePage() {
                 {
                   id: 1,
                   name: "Ashwagandha Supplement",
-                  image: "ashwagandha.jpg",
+                  image: ashwagandhaImage,
                 },
                 {
                   id: 2,
                   name: "Turmeric Face Cream",
-                  image: "turmeric-cream.jpg",
+                  image: turmericCreamImage,
                 },
-                { id: 3, name: "Triphala Powder", image: "triphala.jpg" },
-                { id: 4, name: "Neem Hair Oil", image: "neem-oil.jpg" },
+                { id: 3, name: "Triphala Powder", image: triphalaImage },
+                { id: 4, name: "Neem Hair Oil", image: neemOilImage },
                 {
                   id: 5,
                   name: "Brahmi Brain Tonic",
-                  image: "brahmi-tonic.jpg",
+                  image: brahmiTonicImage,
                 },
                 {
                   id: 6,
                   name: "Shatavari Women's Health",
-                  image: "shatavari.jpg",
+                  image: shatavariImage,
                 },
-                { id: 7, name: "Amla Vitamin C Boost", image: "amla.jpg" },
-                { id: 8, name: "Guduchi Immune Support", image: "guduchi.jpg" },
+                { id: 7, name: "Amla Vitamin C Boost", image: amlaImage },
+                { id: 8, name: "Guduchi Immune Support", image: guduchiImage },
               ].map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -105,7 +115,7 @@ export default function HomePage() {
                   <div className="p-6 space-y-4">
                     <div className="aspect-square bg-gray-100 rounded-md overflow-hidden">
                       <img
-                        src={`/assets/${product.image}`}
+                        src={product.image}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />
